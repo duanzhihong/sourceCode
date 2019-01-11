@@ -66,7 +66,7 @@ if ( ! function_exists('password_get_info'))
 {
 	/**
 	 * password_get_info()
-	 *
+	 * 返回指定散列的相关信息
 	 * @link	http://php.net/password_get_info
 	 * @param	string	$hash
 	 * @return	array

@@ -61,7 +61,7 @@ if ( ! function_exists('hash_equals'))
 {
 	/**
 	 * hash_equals()
-	 *
+	 * 防止时序攻击的字符串的比较,先比较长度，再进行详细比较
 	 * @link	http://php.net/hash_equals
 	 * @param	string	$known_string
 	 * @param	string	$user_string
@@ -71,6 +71,7 @@ if ( ! function_exists('hash_equals'))
 	{
 		if ( ! is_string($known_string))
 		{
+			#发送一个用户级别的错误
 			trigger_error('hash_equals(): Expected known_string to be a string, '.strtolower(gettype($known_string)).' given', E_USER_WARNING);
 			return FALSE;
 		}
@@ -84,6 +85,9 @@ if ( ! function_exists('hash_equals'))
 			return FALSE;
 		}
 
+		#与运算：都为1则为1
+		#或运算： 有一个为1 则为1
+		#异或运算： 相同为0，相异为1
 		$diff = 0;
 		for ($i = 0; $i < $length; $i++)
 		{

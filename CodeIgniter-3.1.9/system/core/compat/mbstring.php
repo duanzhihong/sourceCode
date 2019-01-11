@@ -36,7 +36,6 @@
  * @filesource
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 /**
  * PHP ext/mbstring compatibility package
  *
@@ -49,7 +48,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 
 // ------------------------------------------------------------------------
-
 if (MB_ENABLED === TRUE)
 {
 	return;
@@ -81,7 +79,6 @@ if ( ! function_exists('mb_strlen'))
 		return strlen($str);
 	}
 }
-
 // ------------------------------------------------------------------------
 
 if ( ! function_exists('mb_strpos'))

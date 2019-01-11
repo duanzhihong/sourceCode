@@ -127,7 +127,6 @@ class CI_Log {
 		$this->_file_ext = (isset($config['log_file_extension']) && $config['log_file_extension'] !== '')  #日志文件扩展,后缀名
 			? ltrim($config['log_file_extension'], '.') : 'php';
 		file_exists($this->_log_path) OR mkdir($this->_log_path, 0755, TRUE);
-
 		if ( ! is_dir($this->_log_path) OR ! is_really_writable($this->_log_path))
 		{
 			$this->_enabled = FALSE;
@@ -164,22 +163,25 @@ class CI_Log {
 	 * @param	string	$level 	The error level: 'error', 'debug' or 'info'
 	 * @param	string	$msg 	The error message
 	 * @return	bool
+	 * 记录日志
 	 */
 	public function write_log($level, $msg)
-	{
+	{	
+
+		#构造函数获取了是否有写的权限以及文件的创建
 		if ($this->_enabled === FALSE)
 		{
 			return FALSE;
 		}
 
 		$level = strtoupper($level);
-
+		#日志等级是否合理
 		if (( ! isset($this->_levels[$level]) OR ($this->_levels[$level] > $this->_threshold))
 			&& ! isset($this->_threshold_array[$this->_levels[$level]]))
 		{
 			return FALSE;
 		}
-
+		#文件路径，后缀在构造函数中创建
 		$filepath = $this->_log_path.'log-'.date('Y-m-d').'.'.$this->_file_ext;
 		$message = '';
 
@@ -198,9 +200,10 @@ class CI_Log {
 			return FALSE;
 		}
 
-		flock($fp, LOCK_EX);
+		flock($fp, LOCK_EX); #文件添加排他锁 LOCK_SH 共享锁，LOCK_EX 独占锁，LOCK_UN 释放锁
 
 		// Instantiating DateTime with microseconds appended to initial date is needed for proper support of this format
+		#如果日志格式中包含了毫秒，需要计算时间
 		if (strpos($this->_date_fmt, 'u') !== FALSE)
 		{
 			$microtime_full = microtime(TRUE);
@@ -214,7 +217,7 @@ class CI_Log {
 		}
 
 		$message .= $this->_format_line($level, $date, $msg);
-
+		#写入文件
 		for ($written = 0, $length = self::strlen($message); $written < $length; $written += $result)
 		{
 			if (($result = fwrite($fp, self::substr($message, $written))) === FALSE)
@@ -222,15 +225,15 @@ class CI_Log {
 				break;
 			}
 		}
-
+		#释放文件锁
 		flock($fp, LOCK_UN);
-		fclose($fp);
-
+		fclose($fp);#关闭句柄	
+		#新的文件赋予权限
 		if (isset($newfile) && $newfile === TRUE)
 		{
 			chmod($filepath, $this->_file_permissions);
 		}
-
+		#返回执行结果
 		return is_int($result);
 	}
 
@@ -256,7 +259,7 @@ class CI_Log {
 
 	/**
 	 * Byte-safe strlen()
-	 *
+	 * 	获取字符串的长度
 	 * @param	string	$str
 	 * @return	int
 	 */
@@ -271,7 +274,7 @@ class CI_Log {
 
 	/**
 	 * Byte-safe substr()
-	 *
+	 *字符串截取，如果使用了mb_substr函数重载,用来处理多字节编码问题
 	 * @param	string	$str
 	 * @param	int	$start
 	 * @param	int	$length

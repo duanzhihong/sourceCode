@@ -129,9 +129,9 @@ class CI_Router {
 		$this->enable_query_strings = ( ! is_cli() && $this->config->item('enable_query_strings') === TRUE);
 
 		// If a directory override is configured, it has to be set before any dynamic routing logic
+		#
 		is_array($routing) && isset($routing['directory']) && $this->set_directory($routing['directory']);
 		$this->_set_routing();
-
 		// Set any routing overrides that may exist in the main index file
 		if (is_array($routing))
 		{
@@ -149,7 +149,7 @@ class CI_Router {
 	 *
 	 * Determines what should be served based on the URI request,
 	 * as well as any "routes" that have been set in the routing config file.
-	 *
+	 * 引入路由mapping 测试环境和生产环境 
 	 * @return	void
 	 */
 	protected function _set_routing()
@@ -479,7 +479,7 @@ class CI_Router {
 
 	/**
 	 * Set directory name
-	 *
+	 * 设置文件夹名称
 	 * @param	string	$dir	Directory name
 	 * @param	bool	$append	Whether we're appending rather than setting the full value
 	 * @return	void

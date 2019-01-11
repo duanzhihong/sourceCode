@@ -115,7 +115,6 @@ class CI_URI {
 			{
 				$protocol = $this->config->item('uri_protocol');
 				empty($protocol) && $protocol = 'REQUEST_URI';
-
 				switch ($protocol)
 				{
 					case 'AUTO': // For BC purposes only
@@ -133,7 +132,6 @@ class CI_URI {
 						break;
 				}
 			}
-
 			$this->_set_uri_string($uri);
 		}
 
@@ -144,7 +142,7 @@ class CI_URI {
 
 	/**
 	 * Set URI String
-	 *
+	 * 	返回uri的字符串
 	 * @param 	string	$str
 	 * @return	void
 	 */
@@ -188,7 +186,7 @@ class CI_URI {
 
 	/**
 	 * Parse REQUEST_URI
-	 *
+	 * 解析请求url
 	 * Will parse REQUEST_URI and automatically detect the URI from it,
 	 * while fixing the query string if necessary.
 	 *
@@ -276,7 +274,7 @@ class CI_URI {
 
 	/**
 	 * Parse CLI arguments
-	 *
+	 * 返回数组中的一段
 	 * Take each command line argument and assume it is a URI segment.
 	 *
 	 * @return	string
@@ -293,7 +291,7 @@ class CI_URI {
 	 * Remove relative directory (../) and multi slashes (///)
 	 *
 	 * Do some final cleaning of the URI and return it, currently only used in self::_parse_request_uri()
-	 *
+	 * 删除对象目录的/ 非递归算法
 	 * @param	string	$uri
 	 * @return	string
 	 */
@@ -319,7 +317,7 @@ class CI_URI {
 	 * Filter URI
 	 *
 	 * Filters segments for malicious characters.
-	 *
+	 * 过滤url
 	 * @param	string	$str
 	 * @return	void
 	 */

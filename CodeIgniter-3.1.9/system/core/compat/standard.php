@@ -60,7 +60,7 @@ if ( ! function_exists('array_column'))
 {
 	/**
 	 * array_column()
-	 *
+	 * 返回数组的列
 	 * @link	http://php.net/array_column
 	 * @param	array	$array
 	 * @param	mixed	$column_key
@@ -146,7 +146,7 @@ if ( ! function_exists('hex2bin'))
 {
 	/**
 	 * hex2bin()
-	 *
+	 *	十六禁止转化为二进制
 	 * @link	http://php.net/hex2bin
 	 * @param	string	$data
 	 * @return	string

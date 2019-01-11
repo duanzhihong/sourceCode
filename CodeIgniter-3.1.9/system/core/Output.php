@@ -138,7 +138,9 @@ class CI_Output {
 	 */
 	public function __construct()
 	{
+		#php压缩文件是否开启
 		$this->_zlib_oc = (bool) ini_get('zlib.output_compression');
+		#压缩输出 php.ini zlib扩展
 		$this->_compress_output = (
 			$this->_zlib_oc === FALSE
 			&& config_item('compress_output') === TRUE
@@ -157,7 +159,7 @@ class CI_Output {
 
 	/**
 	 * Get Output
-	 *
+	 * 返回
 	 * Returns the current output string.
 	 *
 	 * @return	string
@@ -171,7 +173,7 @@ class CI_Output {
 
 	/**
 	 * Set Output
-	 *
+	 * 设置输出
 	 * Sets the output string.
 	 *
 	 * @param	string	$output	Output data
@@ -189,7 +191,7 @@ class CI_Output {
 	 * Append Output
 	 *
 	 * Appends data onto the output string.
-	 *
+	 * 追加输出
 	 * @param	string	$output	Data to append
 	 * @return	CI_Output
 	 */
@@ -205,7 +207,7 @@ class CI_Output {
 	 * Set Header
 	 *
 	 * Lets you set a server header which will be sent with the final output.
-	 *
+	 * 设置输出头
 	 * Note: If a file is cached, headers will not be sent.
 	 * @todo	We need to figure out how to permit headers to be cached.
 	 *
@@ -232,7 +234,7 @@ class CI_Output {
 
 	/**
 	 * Set Content-Type Header
-	 *
+	 * 设置输出的类型
 	 * @param	string	$mime_type	Extension of the file we're outputting
 	 * @param	string	$charset	Character set (default: NULL)
 	 * @return	CI_Output
@@ -293,7 +295,7 @@ class CI_Output {
 
 	/**
 	 * Get Header
-	 *
+	 * 获取header列表
 	 * @param	string	$header
 	 * @return	string
 	 */
@@ -327,7 +329,7 @@ class CI_Output {
 
 	/**
 	 * Set HTTP Status Header
-	 *
+	 * 设置http头状态
 	 * As of version 1.7.2, this is an alias for common function
 	 * set_status_header().
 	 *
@@ -362,7 +364,7 @@ class CI_Output {
 	 *
 	 * Allows override of default/config settings for
 	 * Profiler section display.
-	 *
+	 * 	设置分析器
 	 * @param	array	$sections	Profiler sections
 	 * @return	CI_Output
 	 */
@@ -386,7 +388,7 @@ class CI_Output {
 
 	/**
 	 * Set Cache
-	 *
+	 * 设置缓存
 	 * @param	int	$time	Cache expiration time in minutes
 	 * @return	CI_Output
 	 */
@@ -546,7 +548,7 @@ class CI_Output {
 
 	/**
 	 * Write Cache
-	 *
+	 * 写入缓存
 	 * @param	string	$output	Output data to cache
 	 * @return	void
 	 */
@@ -645,7 +647,7 @@ class CI_Output {
 
 	/**
 	 * Update/serve cached output
-	 *
+	 * 输出缓存
 	 * @uses	CI_Config
 	 * @uses	CI_URI
 	 *

@@ -83,12 +83,13 @@ class CI_Utf8 {
 	 * Clean UTF-8 strings
 	 *
 	 * Ensures strings contain only valid UTF-8 characters.
-	 *
+	 * 确保字符串中只包含有效的utf8的字符
 	 * @param	string	$str	String to clean
 	 * @return	string
 	 */
 	public function clean_string($str)
 	{
+		
 		if ($this->is_ascii($str) === FALSE)
 		{
 			if (MB_ENABLED)

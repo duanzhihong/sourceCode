@@ -129,7 +129,7 @@ class CI_Security {
 
 	/**
 	 * List of never allowed strings
-	 *
+	 * 禁止的字符串
 	 * @var	array
 	 */
 	protected $_never_allowed_str =	array(
@@ -149,7 +149,7 @@ class CI_Security {
 
 	/**
 	 * List of never allowed regex replacements
-	 *
+	 * 禁止的正则匹配
 	 * @var	array
 	 */
 	protected $_never_allowed_regex = array(
@@ -172,7 +172,8 @@ class CI_Security {
 	public function __construct()
 	{
 		// Is CSRF protection enabled?
-		if (config_item('csrf_protection'))
+		// if (config_item('csrf_protection'))
+		if (1) 
 		{
 			// CSRF config
 			foreach (array('csrf_expire', 'csrf_token_name', 'csrf_cookie_name') as $key)
@@ -188,7 +189,7 @@ class CI_Security {
 			{
 				$this->_csrf_cookie_name = $cookie_prefix.$this->_csrf_cookie_name;
 			}
-
+			#通过配置的csrf参数来生成哈希
 			// Set the CSRF hash
 			$this->_csrf_set_hash();
 		}
@@ -202,7 +203,7 @@ class CI_Security {
 
 	/**
 	 * CSRF Verify
-	 *
+	 * csrf请求认证
 	 * @return	CI_Security
 	 */
 	public function csrf_verify()
@@ -257,7 +258,7 @@ class CI_Security {
 
 	/**
 	 * CSRF Set Cookie
-	 *
+	 * 设置cookie与http一起发送
 	 * @codeCoverageIgnore
 	 * @return	CI_Security
 	 */
@@ -289,7 +290,7 @@ class CI_Security {
 
 	/**
 	 * Show CSRF Error
-	 *
+	 * csrf验证失败返回页面
 	 * @return	void
 	 */
 	public function csrf_show_error()
@@ -301,7 +302,7 @@ class CI_Security {
 
 	/**
 	 * Get CSRF Hash
-	 *
+	 * 获取csrf哈希
 	 * @see		CI_Security::$_csrf_hash
 	 * @return 	string	CSRF hash
 	 */
@@ -314,7 +315,7 @@ class CI_Security {
 
 	/**
 	 * Get CSRF Token Name
-	 *
+	 * 获取token的名称
 	 * @see		CI_Security::$_csrf_token_name
 	 * @return	string	CSRF token name
 	 */
@@ -327,7 +328,7 @@ class CI_Security {
 
 	/**
 	 * XSS Clean
-	 *
+	 * 防止跨站脚本攻击
 	 * Sanitizes data so that Cross Site Scripting Hacks can be
 	 * prevented.  This method does a fair amount of work but
 	 * it is extremely thorough, designed to prevent even the
@@ -354,6 +355,7 @@ class CI_Security {
 	public function xss_clean($str, $is_image = FALSE)
 	{
 		// Is the string an array?
+		#如果是数组的话，就使用递归执行，先执行最内的字符串
 		if (is_array($str))
 		{
 			foreach ($str as $key => &$value)
@@ -365,11 +367,12 @@ class CI_Security {
 		}
 
 		// Remove Invisible Characters
+		// 删除不可见的字符
 		$str = remove_invisible_characters($str);
 
 		/*
 		 * URL Decode
-		 *
+		 * 对于url的类型进行解码
 		 * Just in case stuff like this is submitted:
 		 *
 		 * <a href="http://%77%77%77%2E%67%6F%6F%67%6C%65%2E%63%6F%6D">Google</a>
@@ -390,7 +393,7 @@ class CI_Security {
 
 		/*
 		 * Convert character entities to ASCII
-		 *
+		 * 使用正则将字符实体转为ASCII
 		 * This permits our tests below to work reliably.
 		 * We only convert entities that are within tags since
 		 * these are the ones that will pose security problems.
@@ -403,7 +406,7 @@ class CI_Security {
 
 		/*
 		 * Convert all tabs to spaces
-		 *
+		 * 去除其中的空格
 		 * This prevents strings like this: ja	vascript
 		 * NOTE: we deal with spaces between characters later.
 		 * NOTE: preg_replace was found to be amazingly slow here on
@@ -415,6 +418,7 @@ class CI_Security {
 		$converted_string = $str;
 
 		// Remove Strings that are never allowed
+		// 过滤其中的关键字
 		$str = $this->_do_never_allowed($str);
 
 		/*
@@ -470,6 +474,7 @@ class CI_Security {
 		 * and its attributes: [\d\s"\'`;,\/\=\(\x00\x0B\x09\x0C]
 		 * ... however, remove_invisible_characters() above already strips the
 		 * hex-encoded ones, so we'll skip them below.
+		 * 删除链接或img标签中不允许的Javascript
 		 */
 		do
 		{
@@ -495,7 +500,7 @@ class CI_Security {
 
 		/*
 		 * Sanitize naughty HTML elements
-		 *
+		 * 清除不规范html元素
 		 * If a tag containing any of the words in the list
 		 * below is found, the tag gets converted to entities.
 		 *
@@ -601,7 +606,7 @@ class CI_Security {
 
 	/**
 	 * Get random bytes
-	 *
+	 * 生成随机的字符串
 	 * @param	int	$length	Output length
 	 * @return	string
 	 */
@@ -1040,7 +1045,7 @@ class CI_Security {
 
 	/**
 	 * Do Never Allowed
-	 *
+	 * 过滤属性中的关键字
 	 * @used-by	CI_Security::xss_clean()
 	 * @param 	string
 	 * @return 	string

@@ -83,9 +83,9 @@ class CI_Config {
 	 */
 	public function __construct()
 	{
-		$this->config =& get_config();
-
+		$this->config =& get_config(); #加载配置文件
 		// Set the base_url automatically if none was provided
+		#配置文件中baseurl为空，自动设置
 		if (empty($this->config['base_url']))
 		{
 			if (isset($_SERVER['SERVER_ADDR']))
@@ -109,7 +109,6 @@ class CI_Config {
 
 			$this->set_item('base_url', $base_url);
 		}
-
 		log_message('info', 'Config Class Initialized');
 	}
 
@@ -117,7 +116,7 @@ class CI_Config {
 
 	/**
 	 * Load Config File
-	 *
+	 * 引入开发环境和测试环境下的配置
 	 * @param	string	$file			Configuration file name
 	 * @param	bool	$use_sections		Whether configuration values should be loaded into their own section
 	 * @param	bool	$fail_gracefully	Whether to just return FALSE or display an error message
@@ -127,7 +126,6 @@ class CI_Config {
 	{
 		$file = ($file === '') ? 'config' : str_replace('.php', '', $file);
 		$loaded = FALSE;
-
 		foreach ($this->_config_paths as $path)
 		{
 			foreach (array($file, ENVIRONMENT.DIRECTORY_SEPARATOR.$file) as $location)
@@ -189,7 +187,7 @@ class CI_Config {
 
 	/**
 	 * Fetch a config file item
-	 *
+	 * 获取配置的项目
 	 * @param	string	$item	Config item name
 	 * @param	string	$index	Index name
 	 * @return	string|null	The configuration item or NULL if the item doesn't exist
@@ -208,7 +206,7 @@ class CI_Config {
 
 	/**
 	 * Fetch a config file item with slash appended (if not empty)
-	 *
+	 *	获取带有/的配置项,例如地址等
 	 * @param	string		$item	Config item name
 	 * @return	string|null	The configuration item or NULL if the item doesn't exist
 	 */
@@ -232,7 +230,8 @@ class CI_Config {
 	 * Site URL
 	 *
 	 * Returns base_url . index_page [. uri_string]
-	 *
+	 *  返回base + index + 参数 + 配置后缀的url
+ 	 *  涉及到 返回当前页面地址的有关信息 PHP_SELF SCRIPT_NAME REQUEST_URI
 	 * @uses	CI_Config::_uri_string()
 	 *
 	 * @param	string|string[]	$uri	URI string or an array of segments
@@ -242,7 +241,6 @@ class CI_Config {
 	public function site_url($uri = '', $protocol = NULL)
 	{
 		$base_url = $this->slash_item('base_url');
-
 		if (isset($protocol))
 		{
 			// For protocol-relative links
@@ -265,8 +263,7 @@ class CI_Config {
 
 		if ($this->item('enable_query_strings') === FALSE)
 		{
-			$suffix = isset($this->config['url_suffix']) ? $this->config['url_suffix'] : '';
-
+			$suffix = isset($this->config['url_suffix']) ? $this->config['url_suffix'] : ''; 
 			if ($suffix !== '')
 			{
 				if (($offset = strpos($uri, '?')) !== FALSE)
@@ -288,16 +285,16 @@ class CI_Config {
 
 		return $base_url.$this->item('index_page').$uri;
 	}
-
+	
 	// -------------------------------------------------------------
 
 	/**
 	 * Base URL
 	 *
 	 * Returns base_url [. uri_string]
-	 *
+	 * 
 	 * @uses	CI_Config::_uri_string()
-	 *
+	 * 返回基本url
 	 * @param	string|string[]	$uri	URI string or an array of segments
 	 * @param	string	$protocol
 	 * @return	string
@@ -326,7 +323,7 @@ class CI_Config {
 
 	/**
 	 * Build URI string
-	 *
+	 * 生成url请求的参数， 使用http_build_query将数组参数转换成url字符串
 	 * @used-by	CI_Config::site_url()
 	 * @used-by	CI_Config::base_url()
 	 *

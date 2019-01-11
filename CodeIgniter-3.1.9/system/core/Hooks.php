@@ -82,14 +82,14 @@ class CI_Hooks {
 
 	/**
 	 * Class constructor
-	 *
+	 *	构造函数中引入类
 	 * @return	void
 	 */
 	public function __construct()
 	{
-		$CFG =& load_class('Config', 'core');
-		log_message('info', 'Hooks Class Initialized');
+		$CFG =& load_class('Config', 'core'); #初始化钩子类，加载config类
 
+		log_message('info', 'Hooks Class Initialized');
 		// If hooks are not enabled in the config file
 		// there is nothing else to do
 		if ($CFG->item('enable_hooks') === FALSE)
@@ -124,7 +124,7 @@ class CI_Hooks {
 	 * Call Hook
 	 *
 	 * Calls a particular hook. Called by CodeIgniter.php.
-	 *
+	 * 调用钩子类
 	 * @uses	CI_Hooks::_run_hook()
 	 *
 	 * @param	string	$which	Hook name
@@ -158,13 +158,14 @@ class CI_Hooks {
 	 * Run Hook
 	 *
 	 * Runs a particular hook
-	 *
+	 * 执行钩子文件
 	 * @param	array	$data	Hook details
 	 * @return	bool	TRUE on success or FALSE on failure
 	 */
 	protected function _run_hook($data)
 	{
 		// Closures/lambda functions and array($object, 'method') callables
+		//检测参数是否为合法的可调用结构
 		if (is_callable($data))
 		{
 			is_array($data)

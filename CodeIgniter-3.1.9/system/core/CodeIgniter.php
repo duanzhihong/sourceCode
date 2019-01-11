@@ -87,8 +87,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Security procedures
  * ------------------------------------------------------
  */
-
-if ( ! is_php('5.4'))
+ #对于低版本的php的安全机制处理，定义了PHP接受的外部变量来源及顺序
+if ( !is_php('5.4'))
 {
 	ini_set('magic_quotes_runtime', 0);
 
@@ -136,10 +136,11 @@ if ( ! is_php('5.4'))
  * ------------------------------------------------------
  *  Define a custom error handler so we can log PHP errors
  * ------------------------------------------------------
+ * #设置php的错误处理
  */
-	set_error_handler('_error_handler');
-	set_exception_handler('_exception_handler');
-	register_shutdown_function('_shutdown_handler');
+	set_error_handler('_error_handler'); #设置用户自定义的错误处理函数
+	set_exception_handler('_exception_handler'); # 设置用户异常的处理函数
+	register_shutdown_function('_shutdown_handler'); # 设置宕机处理的函数
 
 /*
  * ------------------------------------------------------
@@ -156,6 +157,7 @@ if ( ! is_php('5.4'))
  * before any classes are loaded
  * Note: Since the config file data is cached it doesn't
  * hurt to load it here.
+ * 前缀处理
  */
 	if ( ! empty($assign_to_config['subclass_prefix']))
 	{
@@ -166,6 +168,7 @@ if ( ! is_php('5.4'))
  * ------------------------------------------------------
  *  Should we use a Composer autoloader?
  * ------------------------------------------------------
+ * 使用了composer处理
  */
 	if ($composer_autoload = config_item('composer_autoload'))
 	{
@@ -189,6 +192,7 @@ if ( ! is_php('5.4'))
  * ------------------------------------------------------
  *  Start the timer... tick tock tick tock...
  * ------------------------------------------------------
+ * 启动定时器
  */
 	$BM =& load_class('Benchmark', 'core');
 	$BM->mark('total_execution_time_start');
@@ -198,6 +202,7 @@ if ( ! is_php('5.4'))
  * ------------------------------------------------------
  *  Instantiate the hooks class
  * ------------------------------------------------------
+ * 加载钩子程序
  */
 	$EXT =& load_class('Hooks', 'core');
 
@@ -205,6 +210,7 @@ if ( ! is_php('5.4'))
  * ------------------------------------------------------
  *  Is there a "pre_system" hook?
  * ------------------------------------------------------
+ * 调用框架加载前执行的方法，钩子方法
  */
 	$EXT->call_hook('pre_system');
 
@@ -238,7 +244,7 @@ if ( ! is_php('5.4'))
  * and set MB_ENABLED and ICONV_ENABLED constants, so
  * that we don't repeatedly do extension_loaded() or
  * function_exists() calls.
- *
+ * 设置字符集
  * Note: UTF-8 class depends on this. It used to be done
  * in it's constructor, but it's _not_ class-specific.
  *
@@ -283,9 +289,9 @@ if ( ! is_php('5.4'))
 /*
  * ------------------------------------------------------
  *  Load compatibility features
+ * 引入兼容性文件
  * ------------------------------------------------------
  */
-
 	require_once(BASEPATH.'core/compat/mbstring.php');
 	require_once(BASEPATH.'core/compat/hash.php');
 	require_once(BASEPATH.'core/compat/password.php');
@@ -294,6 +300,7 @@ if ( ! is_php('5.4'))
 /*
  * ------------------------------------------------------
  *  Instantiate the UTF-8 class
+ *  引入utf8的类
  * ------------------------------------------------------
  */
 	$UNI =& load_class('Utf8', 'core');
@@ -302,6 +309,7 @@ if ( ! is_php('5.4'))
  * ------------------------------------------------------
  *  Instantiate the URI class
  * ------------------------------------------------------
+ * 引入url类
  */
 	$URI =& load_class('URI', 'core');
 
@@ -309,6 +317,7 @@ if ( ! is_php('5.4'))
  * ------------------------------------------------------
  *  Instantiate the routing class and set the routing
  * ------------------------------------------------------
+ * 引入路由处理类
  */
 	$RTR =& load_class('Router', 'core', isset($routing) ? $routing : NULL);
 
@@ -316,6 +325,7 @@ if ( ! is_php('5.4'))
  * ------------------------------------------------------
  *  Instantiate the output class
  * ------------------------------------------------------
+ *  设置输出类
  */
 	$OUT =& load_class('Output', 'core');
 
@@ -323,6 +333,7 @@ if ( ! is_php('5.4'))
  * ------------------------------------------------------
  *	Is there a valid cache file? If so, we're done...
  * ------------------------------------------------------
+ * 如果有缓存的输出，缓存
  */
 	if ($EXT->call_hook('cache_override') === FALSE && $OUT->_display_cache($CFG, $URI) === TRUE)
 	{
@@ -333,16 +344,17 @@ if ( ! is_php('5.4'))
  * -----------------------------------------------------
  * Load the security class for xss and csrf support
  * -----------------------------------------------------
+ * 加载安全类
  */
 	$SEC =& load_class('Security', 'core');
-
 /*
  * ------------------------------------------------------
  *  Load the Input class and sanitize globals
  * ------------------------------------------------------
+ * 加载输入类并且清除全局变量
  */
 	$IN	=& load_class('Input', 'core');
-
+	echo "input";die;
 /*
  * ------------------------------------------------------
  *  Load the Language class

@@ -469,7 +469,6 @@ if ( ! function_exists('log_message'))
 			// references cannot be directly assigned to static variables, so we use an array
 			$_log[0] =& load_class('Log', 'core');
 		}
-
 		$_log[0]->write_log($level, $message);
 	}
 }
@@ -479,7 +478,7 @@ if ( ! function_exists('set_status_header'))
 {
 	/**
 	 * Set HTTP Status Header
-	 *
+	 * 设置http返回的响应头
 	 * @param	int	the status code
 	 * @param	string
 	 * @return	void
@@ -500,56 +499,56 @@ if ( ! function_exists('set_status_header'))
 		{
 			is_int($code) OR $code = (int) $code;
 			$stati = array(
-				100	=> 'Continue',
-				101	=> 'Switching Protocols',
+				100	=> 'Continue', #初始化的请求已经接受，等待客户端继续发送
+				101	=> 'Switching Protocols', #协议的转换
 
-				200	=> 'OK',
-				201	=> 'Created',
-				202	=> 'Accepted',
-				203	=> 'Non-Authoritative Information',
-				204	=> 'No Content',
-				205	=> 'Reset Content',
-				206	=> 'Partial Content',
+				200	=> 'OK', #一切正常
+				201	=> 'Created', # 服务器创建文档
+				202	=> 'Accepted', # 已经接受请求，但是尚未处理
+				203	=> 'Non-Authoritative Information', #文档已经正常返回，但是有一些应答头可能不正确
+				204	=> 'No Content', # 没有新文档
+				205	=> 'Reset Content', # 没有新的内容
+				206	=> 'Partial Content', #客户端发送了一个带有range头的GET请求
 
-				300	=> 'Multiple Choices',
-				301	=> 'Moved Permanently',
-				302	=> 'Found',
-				303	=> 'See Other',
-				304	=> 'Not Modified',
-				305	=> 'Use Proxy',
-				307	=> 'Temporary Redirect',
+				300	=> 'Multiple Choices',  # 客户请求的文档可以在多个位置找到
+				301	=> 'Moved Permanently', # 客户请求的文档在其他地方
+				302	=> 'Found', #类似于301，但是新的url应该被视为临时的替代，而不是永久性的
+				303	=> 'See Other',# 为了处理POST请求重定向到GET请求的情况
+				304	=> 'Not Modified', #使用的缓存的文档
+				305	=> 'Use Proxy', # 请求的文档应该通过location头所指明的代理服务器提取 
+				307	=> 'Temporary Redirect', # 303: 浏览器可以跟随重定向的GET和POST请求，如果是307，301， 302，浏览器只能跟随对GET，，HEAD请求的重定向
 
-				400	=> 'Bad Request',
-				401	=> 'Unauthorized',
-				402	=> 'Payment Required',
-				403	=> 'Forbidden',
-				404	=> 'Not Found',
-				405	=> 'Method Not Allowed',
-				406	=> 'Not Acceptable',
-				407	=> 'Proxy Authentication Required',
-				408	=> 'Request Timeout',
-				409	=> 'Conflict',
-				410	=> 'Gone',
-				411	=> 'Length Required',
-				412	=> 'Precondition Failed',
-				413	=> 'Request Entity Too Large',
-				414	=> 'Request-URI Too Long',
-				415	=> 'Unsupported Media Type',
-				416	=> 'Requested Range Not Satisfiable',
-				417	=> 'Expectation Failed',
-				422	=> 'Unprocessable Entity',
+				400	=> 'Bad Request', # 请求出现的语法错误 
+				401	=> 'Unauthorized', # 访问被拒绝
+				402	=> 'Payment Required', #
+				403	=> 'Forbidden', # 访问的资源不可用 ，通常由于服务器上的文件或者目录的权限设置导致
+				404	=> 'Not Found', # 文件没有找到
+				405	=> 'Method Not Allowed',  #请求的方法不正确
+				406	=> 'Not Acceptable', # 资源已经找到，但是不接受所请求的MIME类型
+				407	=> 'Proxy Authentication Required', #要求进行代理身份认证
+				408	=> 'Request Timeout', # 在服务器许可的等待时间内，客户端一直没有发出请求
+				409	=> 'Conflict', # 通常和PUT请求有关
+				410	=> 'Gone', # 所请求的文档已经不可以在用
+				411	=> 'Length Required', # 处理器不能发送请求，除非客户端发送一个content-length头
+				412	=> 'Precondition Failed' , #请求头中指定一些前提条件的失败
+				413	=> 'Request Entity Too Large', # 目标请求的文档超过了当前服务器愿意处理的大小
+				414	=> 'Request-URI Too Long', # url太长
+				415	=> 'Unsupported Media Type', # 不支持的媒体类型 
+				416	=> 'Requested Range Not Satisfiable', # 服务端不能满足客户端在请求中指定的range头
+				417	=> 'Expectation Failed', # 执行失败
+ 				422	=> 'Unprocessable Entity', 
 				426	=> 'Upgrade Required',
 				428	=> 'Precondition Required',
 				429	=> 'Too Many Requests',
 				431	=> 'Request Header Fields Too Large',
 
-				500	=> 'Internal Server Error',
-				501	=> 'Not Implemented',
-				502	=> 'Bad Gateway',
-				503	=> 'Service Unavailable',
-				504	=> 'Gateway Timeout',
-				505	=> 'HTTP Version Not Supported',
-				511	=> 'Network Authentication Required',
+				500	=> 'Internal Server Error', # 服务器遇到错误
+				501	=> 'Not Implemented', # 服务器不支持实现请求所需要的功能
+				502	=> 'Bad Gateway', # web服务器作为网关或者代理的时候收到了无效的响应
+				503	=> 'Service Unavailable', # 服务不可以用，服务器由于维护或者负载过重未能答应
+				504	=> 'Gateway Timeout', # 网关超时
+				505	=> 'HTTP Version Not Supported', #服务器不知道请求中所指明的http版本
+ 				511	=> 'Network Authentication Required',
 			);
 
 			if (isset($stati[$code]))
@@ -561,7 +560,6 @@ if ( ! function_exists('set_status_header'))
 				show_error('No status text available. Please check your status code number or supply your own message text.', 500);
 			}
 		}
-
 		if (strpos(PHP_SAPI, 'cgi') === 0)
 		{
 			header('Status: '.$code.' '.$text, TRUE);
@@ -587,7 +585,7 @@ if ( ! function_exists('_error_handler'))
 	 * intercepts PHP errors, however, we also need to display errors
 	 * based on the current error_reporting level.
 	 * We do that with the use of a PHP error template.
-	 *
+	 * 对于错误的处理
 	 * @param	int	$severity
 	 * @param	string	$message
 	 * @param	string	$filepath
@@ -597,13 +595,13 @@ if ( ! function_exists('_error_handler'))
 	function _error_handler($severity, $message, $filepath, $line)
 	{
 		$is_error = (((E_ERROR | E_PARSE | E_COMPILE_ERROR | E_CORE_ERROR | E_USER_ERROR) & $severity) === $severity);
-
 		// When an error occurred, set the status header to '500 Internal Server Error'
 		// to indicate to the client something went wrong.
 		// This can't be done within the $_error->show_php_error method because
 		// it is only called when the display_errors flag is set (which isn't usually
 		// the case in a production environment) or when errors are ignored because
 		// they are above the error_reporting threshold.
+		#设置错误响应头
 		if ($is_error)
 		{
 			set_status_header(500);
@@ -615,11 +613,11 @@ if ( ! function_exists('_error_handler'))
 		{
 			return;
 		}
-
+		#加载异常类
 		$_error =& load_class('Exceptions', 'core');
 		$_error->log_exception($severity, $message, $filepath, $line);
 
-		// Should we display the error?
+		// Should we display the error? str_ireplace#字符串替换，忽略大小写版本
 		if (str_ireplace(array('off', 'none', 'no', 'false', 'null'), '', ini_get('display_errors')))
 		{
 			$_error->show_php_error($severity, $message, $filepath, $line);
@@ -634,7 +632,6 @@ if ( ! function_exists('_error_handler'))
 		}
 	}
 }
-
 // ------------------------------------------------------------------------
 
 if ( ! function_exists('_exception_handler'))
@@ -645,7 +642,7 @@ if ( ! function_exists('_exception_handler'))
 	 * Sends uncaught exceptions to the logger and displays them
 	 * only if display_errors is On so that they don't show up in
 	 * production environments.
-	 *
+	 * # 异常处理
 	 * @param	Exception	$exception
 	 * @return	void
 	 */
@@ -671,7 +668,7 @@ if ( ! function_exists('_shutdown_handler'))
 {
 	/**
 	 * Shutdown Handler
-	 *
+	 * 服务器异常退出的错误，获取php的最后的错误来进行记录
 	 * This is the shutdown handler that is declared at the top
 	 * of CodeIgniter.php. The main reason we use this is to simulate
 	 * a complete custom exception handler.
@@ -684,7 +681,7 @@ if ( ! function_exists('_shutdown_handler'))
 	 */
 	function _shutdown_handler()
 	{
-		$last_error = error_get_last();
+		$last_error = error_get_last(); #获取最后发生的错误
 		if (isset($last_error) &&
 			($last_error['type'] & (E_ERROR | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING)))
 		{
@@ -702,7 +699,7 @@ if ( ! function_exists('remove_invisible_characters'))
 	 *
 	 * This prevents sandwiching null characters
 	 * between ascii characters, like Java\0script.
-	 *
+	 * 移除不可见的字符,防止在ascii字符中插入空字符
 	 * @param	string
 	 * @param	bool
 	 * @return	string
@@ -738,7 +735,7 @@ if ( ! function_exists('html_escape'))
 {
 	/**
 	 * Returns HTML escaped variable.
-	 *
+	 * 返回html转义变量
 	 * @param	mixed	$var		The input string or array of strings to be escaped.
 	 * @param	bool	$double_encode	$double_encode set to FALSE prevents escaping twice.
 	 * @return	mixed			The escaped string or array of strings as a result.
@@ -773,7 +770,7 @@ if ( ! function_exists('_stringify_attributes'))
 	 *
 	 * Helper function used to convert a string, array, or object
 	 * of attributes to a string.
-	 *
+	 * #将数组或者对象专为字符串
 	 * @param	mixed	string, array, object
 	 * @param	bool
 	 * @return	string
@@ -809,7 +806,7 @@ if ( ! function_exists('function_usable'))
 {
 	/**
 	 * Function usable
-	 *
+	 * 判断函数是否方法可用
 	 * Executes a function_exists() check, and if the Suhosin PHP
 	 * extension is loaded - checks whether the function that is
 	 * checked might be disabled in there as well.
@@ -849,3 +846,4 @@ if ( ! function_exists('function_usable'))
 		return FALSE;
 	}
 }
+

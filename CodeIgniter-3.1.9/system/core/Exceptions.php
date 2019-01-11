@@ -92,7 +92,7 @@ class CI_Exceptions {
 	 * Exception Logger
 	 *
 	 * Logs PHP generated error messages
-	 *
+	 * 记录异常日志
 	 * @param	int	$severity	Log level
 	 * @param	string	$message	Error message
 	 * @param	string	$filepath	File path
