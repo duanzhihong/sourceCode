@@ -533,7 +533,7 @@ class CI_Security {
 
 		/*
 		 * Sanitize naughty scripting elements
-		 *
+		 * 清除不规范的脚本元素
 		 * Similar to above, only instead of looking for
 		 * tags it looks for PHP and JavaScript commands
 		 * that are disallowed. Rather than removing the

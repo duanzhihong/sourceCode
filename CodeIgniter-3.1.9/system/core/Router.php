@@ -168,6 +168,7 @@ class CI_Router {
 		}
 
 		// Validate & get reserved routes
+		#设置默认的路由
 		if (isset($route) && is_array($route))
 		{
 			isset($route['default_controller']) && $this->default_controller = $route['default_controller'];
