@@ -285,7 +285,7 @@ class CI_Router {
 
 	/**
 	 * Set default controller
-	 *
+	 * 设置默认的控制器
 	 * @return	void
 	 */
 	protected function _set_default_controller()

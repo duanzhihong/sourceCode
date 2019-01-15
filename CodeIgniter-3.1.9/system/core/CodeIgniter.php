@@ -369,7 +369,7 @@ if ( !is_php('5.4'))
  */
 	// Load the base controller class
 	require_once BASEPATH.'core/Controller.php';
-	echo 'die';die;
+
 	/**
 	 * Reference to the CI_Controller method.
 	 *
@@ -381,7 +381,7 @@ if ( !is_php('5.4'))
 	{
 		return CI_Controller::get_instance();
 	}
-
+	//引入前缀控制器文件
 	if (file_exists(APPPATH.'core/'.$CFG->config['subclass_prefix'].'Controller.php'))
 	{
 		require_once APPPATH.'core/'.$CFG->config['subclass_prefix'].'Controller.php';
@@ -394,7 +394,7 @@ if ( !is_php('5.4'))
  * ------------------------------------------------------
  *  Sanity checks
  * ------------------------------------------------------
- *
+ *  检查效验请求路径
  *  The Router class has already validated the request,
  *  leaving us with 3 options here:
  *
@@ -517,6 +517,7 @@ if ( !is_php('5.4'))
  * ------------------------------------------------------
  *  Is there a "pre_controller" hook?
  * ------------------------------------------------------
+ * 调用控制器之前的钩子程序
  */
 	$EXT->call_hook('pre_controller');
 
@@ -524,6 +525,7 @@ if ( !is_php('5.4'))
  * ------------------------------------------------------
  *  Instantiate the requested controller
  * ------------------------------------------------------
+ * 初始化类
  */
 	// Mark a start point so we can benchmark the controller
 	$BM->mark('controller_execution_time_( '.$class.' / '.$method.' )_start');

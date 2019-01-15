@@ -437,7 +437,7 @@ class CI_Output {
 		}
 
 		// --------------------------------------------------------------------
-
+		//写入缓存，当路由请求需要的时候，直接从缓存输出
 		// Do we need to write a cache file? Only if the controller does not have its
 		// own _output() method and we are not dealing with a cache file, which we
 		// can determine by the existence of the $CI object above
