@@ -66,15 +66,16 @@ class CI_Controller {
 	public function __construct()
 	{
 		self::$instance =& $this;
-
 		// Assign all the class objects that were instantiated by the
 		// bootstrap file (CodeIgniter.php) to local class variables
 		// so that CI can run as one big super object.
+		#之前的文件引入的类，都放在了is_loaded的静态方法中，此处加载到ci这个超级对象中
 		foreach (is_loaded() as $var => $class)
 		{
 			$this->$var =& load_class($class);
 		}
 
+		#加载程序类
 		$this->load =& load_class('Loader', 'core');
 		$this->load->initialize();
 		log_message('info', 'Controller Class Initialized');

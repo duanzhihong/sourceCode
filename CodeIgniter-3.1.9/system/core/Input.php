@@ -346,6 +346,7 @@ class CI_Input {
 	/**
 	 * Set cookie
 	 *
+	 * 设置cookie值
 	 * Accepts an arbitrary number of parameters (up to 7) or an associative
 	 * array in the first parameter containing all the values.
 	 *
@@ -412,7 +413,7 @@ class CI_Input {
 
 	/**
 	 * Fetch the IP Address
-	 *
+	 * 
 	 * Determines and validates the visitor's IP address.
 	 *
 	 * @return	string	IP address
@@ -549,7 +550,7 @@ class CI_Input {
 
 	/**
 	 * Validate IP Address
-	 *
+	 * 检查ip地址为ipv4还是ipv6
 	 * @param	string	$ip	IP address
 	 * @param	string	$which	IP protocol: 'ipv4' or 'ipv6'
 	 * @return	bool

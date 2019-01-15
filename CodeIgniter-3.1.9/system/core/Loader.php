@@ -53,70 +53,71 @@ class CI_Loader {
 	// All these are set automatically. Don't mess with them.
 	/**
 	 * Nesting level of the output buffering mechanism
-	 *
+	 * 输出缓冲机制的级别
 	 * @var	int
 	 */
 	protected $_ci_ob_level;
 
 	/**
 	 * List of paths to load views from
-	 *
+	 * 加载视图的路径列表
 	 * @var	array
 	 */
 	protected $_ci_view_paths =	array(VIEWPATH	=> TRUE);
 
 	/**
 	 * List of paths to load libraries from
-	 *
+	 * 加载库的路径列表
 	 * @var	array
 	 */
 	protected $_ci_library_paths =	array(APPPATH, BASEPATH);
 
 	/**
 	 * List of paths to load models from
-	 *
+	 * 加载模型的路径列表
 	 * @var	array
 	 */
 	protected $_ci_model_paths =	array(APPPATH);
 
 	/**
 	 * List of paths to load helpers from
-	 *
+	 * 加载帮助程序的路径列表
 	 * @var	array
 	 */
 	protected $_ci_helper_paths =	array(APPPATH, BASEPATH);
 
 	/**
 	 * List of cached variables
-	 *
+	 * 缓存变量列表
 	 * @var	array
 	 */
 	protected $_ci_cached_vars =	array();
 
 	/**
 	 * List of loaded classes
-	 *
+	 * 已加载类的列表
 	 * @var	array
 	 */
 	protected $_ci_classes =	array();
 
 	/**
 	 * List of loaded models
-	 *
+	 * 加载模型的列表
 	 * @var	array
 	 */
 	protected $_ci_models =	array();
 
 	/**
 	 * List of loaded helpers
-	 *
+	 * 加载辅助函数
 	 * @var	array
 	 */
 	protected $_ci_helpers =	array();
 
 	/**
 	 * List of class name mappings
-	 *
+	 * 类名的映射列表
+	 * 代理和单元测试
 	 * @var	array
 	 */
 	protected $_ci_varmap =	array(
@@ -130,14 +131,14 @@ class CI_Loader {
 	 * Class constructor
 	 *
 	 * Sets component load paths, gets the initial output buffering level.
-	 *
+	 *  获取缓存级别和自动加载类
+	 *  记录加载日志
 	 * @return	void
 	 */
 	public function __construct()
 	{
 		$this->_ci_ob_level = ob_get_level();
 		$this->_ci_classes =& is_loaded();
-
 		log_message('info', 'Loader Class Initialized');
 	}
 
@@ -145,7 +146,7 @@ class CI_Loader {
 
 	/**
 	 * Initializer
-	 *
+	 * 初始化
 	 * @todo	Figure out a way to move this to the constructor
 	 *		without breaking *package_path*() methods.
 	 * @uses	CI_Loader::_ci_autoloader()
@@ -178,7 +179,7 @@ class CI_Loader {
 
 	/**
 	 * Library Loader
-	 *
+	 * 加载类库
 	 * Loads and instantiates libraries.
 	 * Designed to be called from application controllers.
 	 *
@@ -223,12 +224,12 @@ class CI_Loader {
 
 	/**
 	 * Model Loader
-	 *
+	 * 加载model类库 
 	 * Loads and instantiates models.
 	 *
-	 * @param	mixed	$model		Model name
-	 * @param	string	$name		An optional object name to assign to
-	 * @param	bool	$db_conn	An optional database connection configuration to initialize
+	 * @param	mixed	$model		Model name 加载的模型名称
+	 * @param	string	$name		An optional object name to assign to 加载的模型的别名
+	 * @param	bool	$db_conn	An optional database connection configuration to initialize 是否需要连接数据库进行初始化
 	 * @return	object
 	 */
 	public function model($model, $name = '', $db_conn = FALSE)
@@ -294,7 +295,7 @@ class CI_Loader {
 		//       MY_Model from being an abstract class and is
 		//       sub-optimal otherwise anyway.
 		if ( ! class_exists('CI_Model', FALSE))
-		{
+		{   //加载model文件
 			$app_path = APPPATH.'core'.DIRECTORY_SEPARATOR;
 			if (file_exists($app_path.'Model.php'))
 			{
@@ -364,7 +365,7 @@ class CI_Loader {
 
 	/**
 	 * Database Loader
-	 *
+	 * 加载数据库的类库
 	 * @param	mixed	$params		Database configuration options
 	 * @param	bool	$return 	Whether to return the database object
 	 * @param	bool	$query_builder	Whether to enable Query Builder
@@ -404,7 +405,7 @@ class CI_Loader {
 
 	/**
 	 * Load the Database Utilities Class
-	 *
+	 * 加载数据库工具类
 	 * @param	object	$db	Database object
 	 * @param	bool	$return	Whether to return the DB Utilities class object or not
 	 * @return	object
@@ -436,7 +437,7 @@ class CI_Loader {
 
 	/**
 	 * Load the Database Forge Class
-	 *
+	 * 加载数据库工厂类
 	 * @param	object	$db	Database object
 	 * @param	bool	$return	Whether to return the DB Forge class object or not
 	 * @return	object
@@ -482,7 +483,7 @@ class CI_Loader {
 	 * View Loader
 	 *
 	 * Loads "view" files.
-	 *
+	 * 加载视图文件夹
 	 * @param	string	$view	View name
 	 * @param	array	$vars	An associative array of data
 	 *				to be extracted for use in the view
@@ -499,7 +500,7 @@ class CI_Loader {
 
 	/**
 	 * Generic File Loader
-	 *
+	 * //加载文件夹
 	 * @param	string	$path	File path
 	 * @param	bool	$return	Whether to return the file output
 	 * @return	object|string
@@ -513,7 +514,7 @@ class CI_Loader {
 
 	/**
 	 * Set Variables
-	 *
+	 * 设置视图中的变量
 	 * Once variables are set they become available within
 	 * the controller class and its "view" files.
 	 *
@@ -585,7 +586,7 @@ class CI_Loader {
 
 	/**
 	 * Helper Loader
-	 *
+	 * 引入helper方法
 	 * @param	string|string[]	$helpers	Helper name(s)
 	 * @return	object
 	 */
@@ -658,7 +659,7 @@ class CI_Loader {
 
 	/**
 	 * Load Helpers
-	 *
+	 * 加载helper的文件
 	 * An alias for the helper() method in case the developer has
 	 * written the plural form of it.
 	 *
@@ -675,7 +676,7 @@ class CI_Loader {
 
 	/**
 	 * Language Loader
-	 *
+	 * 加载语言类文件
 	 * Loads language files.
 	 *
 	 * @param	string|string[]	$files	List of language file names to load
@@ -694,7 +695,7 @@ class CI_Loader {
 	 * Config Loader
 	 *
 	 * Loads a config file (an alias for CI_Config::load()).
-	 *
+	 * 加载config文件
 	 * @uses	CI_Config::load()
 	 * @param	string	$file			Configuration file name
 	 * @param	bool	$use_sections		Whether configuration values should be loaded into their own section
@@ -712,7 +713,7 @@ class CI_Loader {
 	 * Driver Loader
 	 *
 	 * Loads a driver library.
-	 *
+	 * 加载一个驱动程序库
 	 * @param	string|string[]	$library	Driver name(s)
 	 * @param	array		$params		Optional parameters to pass to the driver
 	 * @param	string		$object_name	An optional object name to assign to
@@ -766,7 +767,7 @@ class CI_Loader {
 	 *
 	 * Prepends a parent path to the library, model, helper and config
 	 * path arrays.
-	 *
+	 * 添加包的路径
 	 * @see	CI_Loader::$_ci_library_paths
 	 * @see	CI_Loader::$_ci_model_paths
 	 * @see CI_Loader::$_ci_helper_paths
@@ -868,7 +869,7 @@ class CI_Loader {
 
 	/**
 	 * Internal CI Data Loader
-	 *
+	 * 加载视图和file文件
 	 * Used to load views and files.
 	 *
 	 * Variables are prefixed with _ci_ to avoid symbol collision with
@@ -1289,7 +1290,7 @@ class CI_Loader {
 
 	/**
 	 * CI Autoloader
-	 *
+	 * ci自动加载，根据配置中的自动加载文件
 	 * Loads component listed in the config/autoload.php file.
 	 *
 	 * @used-by	CI_Loader::initialize()
@@ -1313,24 +1314,26 @@ class CI_Loader {
 		}
 
 		// Autoload packages
+		// 加载自动引入文件中的应用程序包
 		if (isset($autoload['packages']))
 		{
 			foreach ($autoload['packages'] as $package_path)
 			{
-				$this->add_package_path($package_path);
+				$this->add_package_path($package_path); //加载包的路径
 			}
 		}
 
 		// Load any custom config file
+		// 加载自动引入文件的配置文件
 		if (count($autoload['config']) > 0)
 		{
 			foreach ($autoload['config'] as $val)
 			{
-				$this->config($val);
+				$this->config($val); 
 			}
 		}
-
 		// Autoload helpers and languages
+		// 加载自动引入文件中的辅助函数和语言包
 		foreach (array('helper', 'language') as $type)
 		{
 			if (isset($autoload[$type]) && count($autoload[$type]) > 0)
@@ -1340,17 +1343,20 @@ class CI_Loader {
 		}
 
 		// Autoload drivers
+		// 加载自动引入文件中的驱动器
 		if (isset($autoload['drivers']))
 		{
 			$this->driver($autoload['drivers']);
 		}
 
 		// Load libraries
+		// 加载类库
 		if (isset($autoload['libraries']) && count($autoload['libraries']) > 0)
 		{
 			// Load the database driver.
 			if (in_array('database', $autoload['libraries']))
 			{
+				//加载数据库
 				$this->database();
 				$autoload['libraries'] = array_diff($autoload['libraries'], array('database'));
 			}
@@ -1360,6 +1366,7 @@ class CI_Loader {
 		}
 
 		// Autoload models
+		// 自动加载model
 		if (isset($autoload['model']))
 		{
 			$this->model($autoload['model']);

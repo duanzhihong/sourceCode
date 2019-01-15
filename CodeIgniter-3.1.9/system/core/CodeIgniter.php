@@ -354,23 +354,22 @@ if ( !is_php('5.4'))
  * 加载输入类并且清除全局变量
  */
 	$IN	=& load_class('Input', 'core');
-	echo "input";die;
 /*
  * ------------------------------------------------------
  *  Load the Language class
  * ------------------------------------------------------
+ * 加载语言类
  */
 	$LANG =& load_class('Lang', 'core');
-
 /*
  * ------------------------------------------------------
  *  Load the app controller and local controller
  * ------------------------------------------------------
- *
+ * 加载 controller
  */
 	// Load the base controller class
 	require_once BASEPATH.'core/Controller.php';
-
+	echo 'die';die;
 	/**
 	 * Reference to the CI_Controller method.
 	 *

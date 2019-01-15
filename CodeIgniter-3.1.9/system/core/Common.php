@@ -226,7 +226,6 @@ if ( ! function_exists('is_loaded'))
 		{
 			$_is_loaded[strtolower($class)] = $class;
 		}
-
 		return $_is_loaded;
 	}
 }

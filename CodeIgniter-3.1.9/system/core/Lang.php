@@ -64,7 +64,7 @@ class CI_Lang {
 
 	/**
 	 * Class constructor
-	 *
+	 * 记录加载日志
 	 * @return	void
 	 */
 	public function __construct()
@@ -76,7 +76,7 @@ class CI_Lang {
 
 	/**
 	 * Load a language file
-	 *
+	 * 加载语言包文件
 	 * @param	mixed	$langfile	Language file name
 	 * @param	string	$idiom		Language name (english, etc.)
 	 * @param	bool	$return		Whether to return the loaded array of translations
